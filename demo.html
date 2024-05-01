@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Clock</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        div {
+            margin: 10px;
+            padding: 20px;
+            font-size: 24px;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>Real-Time Clock</h1>
+    <div id="clockAZ">Loading time in Phoenix, Arizona...</div>
+    <div id="clockNL">Loading time in the Netherlands...</div>
+    <script>
+        function updateClocks() {
+            // Get the current time in UTC
+            let now = new Date();
+
+            // Calculate the time in Phoenix, Arizona (UTC-7)
+            let timeAZ = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),
+                                  now.getUTCHours() - 7, now.getUTCMinutes(), now.getUTCSeconds());
+
+            // Calculate the time in the Netherlands (UTC+1 or UTC+2 for daylight saving)
+            let offsetNL = new Date().toLocaleString('en-US', { timeZone: 'Europe/Amsterdam' }).endsWith('AM') ? 1 : 2;
+            let timeNL = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),
+                                  now.getUTCHours() + offsetNL, now.getUTCMinutes(), now.getUTCSeconds());
+
+            // Update the clocks
+            document.getElementById('clockAZ').innerHTML = `Current time in Phoenix, Arizona: ${timeAZ.toLocaleTimeString()}`;
+            document.getElementById('clockNL').innerHTML = `Current time in the Netherlands: ${timeNL.toLocaleTimeString()}`;
+        }
+
+        // Update clocks every second
+        setInterval(updateClocks, 1000);
+    </script>
+</body>
+</html>

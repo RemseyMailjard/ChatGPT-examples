@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File Upload Example</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* Custom CSS for styling */
+    .container {
+      margin-top: 50px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Upload a File</h2>
+  <form id="fileUploadForm" enctype="multipart/form-data">
+    <div class="form-group">
+      <label for="file">Choose File:</label>
+      <input type="file" class="form-control-file" id="file" name="file">
+    </div>
+    <button type="submit" class="btn btn-primary">Upload</button>
+  </form>
+  <div id="uploadStatus"></div>
+</div>
+
+<!-- Bootstrap JS and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+  // Function to handle form submission
+  $('#fileUploadForm').submit(function(event) {
+    // Prevent default form submission
+    event.preventDefault();
+
+    // Create FormData object to store file data
+    var formData = new FormData();
+    
+    // Append file data to FormData object
+    var fileInput = document.getElementById('file');
+    formData.append('file', fileInput.files[0]);
+
+    // Send AJAX request to server for file upload
+    $.ajax({
+      url: 'upload.php', // Replace 'upload.php' with your server-side file upload endpoint
+      type: 'POST',
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function(response) {
+        // Handle success response
+        $('#uploadStatus').html('<div class="alert alert-success" role="alert">File uploaded successfully!</div>');
+      },
+      error: function(xhr, status, error) {
+        // Handle error response
+        $('#uploadStatus').html('<div class="alert alert-danger" role="alert">Error uploading file: ' + error + '</div>');
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
